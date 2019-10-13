@@ -18,7 +18,7 @@
   .cm-s-markdownpad2 span.cm-string, .cm-s-markdownpad2 span.cm-string-2 { color: blue; }
   .cm-s-markdownpad2 span.cm-number { color: #bd93f9; }
   .cm-s-markdownpad2 span.cm-variable { color: #ff79c6; }
-  .cm-s-markdownpad2 span.cm-variable-2 { color: white; }
+  .cm-s-markdownpad2 span.cm-variable-2 { color: #bd93f9; }
   .cm-s-markdownpad2 span.cm-def { color: #ff79c6; }
   .cm-s-markdownpad2 span.cm-operator { color: #ff79c6; }
   .cm-s-markdownpad2 span.cm-keyword { color: #ff79c6; }

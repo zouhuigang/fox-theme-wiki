@@ -278,6 +278,11 @@ document.getElementById('navToggler').addEventListener('click', function() {
 	 
 });
 
+//新建文件
+document.getElementById('newFile').addEventListener('click', function() {	
+	newMdFile();
+});
+
 
 
 
@@ -304,10 +309,12 @@ function showHideNav(){
 	if(att=='flex'||att=='block'){
     $(".leftMenu").css("display","none");	
     $(".bodyEditor").css("left","0px");
+    $("#navToggler").css("left","0px")
     $("#navToggler").addClass("navTogglerOn");
 	}else if(att=="none"){
     $(".leftMenu").css("display","block");
     $(".bodyEditor").css("left","270px");
+    $("#navToggler").css("left","270px");
     $("#navToggler").removeClass("navTogglerOn");
     
 	}
@@ -415,65 +422,30 @@ function trim(s){
 
 //保存
 function saveMd(){
-	
-	    var md =cm.getValue();
-		//var title = cm.lineInfo(0);
-		var title =$("#title").val();
-		if(!title){
-		    layer.msg("标题不能为空..", {icon: 5});
-			return false;
-		}
-
-		var id = parseInt($("#id").val())?parseInt($("#id").val()):0;
-		var is_open = parseInt($("#is_open").val())?parseInt($("#is_open").val()):0;
-		if(!md){
-		    layer.msg("讨厌,内容不能为空啦...", {icon: 5});
-			return false;
-		}
-		var kw=trim($("._2owEqY-xWf_U1jFFlcqI5d").text());
-		if(!kw){
-		    kw="云笔记";
-		}
-
-		//背景音乐
-		var bg_mp3 =$("#bg-mp3 li ._2qFpLQL4m3cyei3AiQBFsn").attr("data-id");
-		//{id:id,content:md,title:title.text,submit:1,is_open:is_open,password_code:}
+	  var md =cm.getValue();
+		//选择的当前文件
+    var fileName =$("#bg-mp3 li ._2qFpLQL4m3cyei3AiQBFsn").attr("data-path");
+    if(!fileName){
+      layer.msg("请选择文件");
+      return false;
+    }
 		var tempObj={};
-		tempObj["submit"] =1;
-        tempObj["id"] =id;
-        tempObj["content"] = md;
-        tempObj["title"] = title;
-		tempObj["is_open"] = is_open;
-		tempObj["kw"] = kw;
-		tempObj["bg_mp3"] = bg_mp3;
-
-		if(is_open==2){//加密密码
-			var share_password=$("#show-passwd").val();
-			if(!share_password){
-			   layer.msg("设置为用密码访问时,密码不能为空", {icon: 5});
-			}
-
-			tempObj["password_code"] = share_password;
-		}
-
-		//console.info(tempObj);
-	//	return false;
+    tempObj["content"] = md;
+		tempObj["fileName"] = fileName;
 		
 		$.ajax({
 			     type: "POST",
-	             url: "/md/submitmd",
+	             url: "/markdown/save",
 	             data:tempObj,
 	             dataType: "json",
-	             success: function(data){
-					 if(data.ok){
-						 $("#id").val(data.data.id);
-						 layer.msg(data.msg);
-					 }else{
-					 	layer.msg(data.error);
-					 }
-		
-				  //setTimeout("window.location.reload()",1000);
-				 }
+	             success: function(res){
+                 if(res.error==0){
+                  layer.msg("保存成功");
+                 }else{
+                  layer.msg(res.error_description);
+                 }
+                
+				      }
 		})	
 }
 
@@ -512,14 +484,64 @@ function createcode(){
 
 }
 
-//选择背景音乐
+//选择markdown
 $(document).ready(function(){
   $("#bg-mp3 li").click(function(){
 	 var str_html="<div class=\"_2PNRJNNjA4_U0YygXkoknR _2RuoFSLh7mJSxuKSstubYq _22-PtjvtC0DQ2_r5-t3Im7\"></div>";
-	$("#bg-mp3 li ._2fu3EvuSxkRWBPBgPUk19_").removeClass("_2qFpLQL4m3cyei3AiQBFsn");//移除其他li的颜色
-	$("#bg-mp3 li ._2fu3EvuSxkRWBPBgPUk19_ div").remove("._2PNRJNNjA4_U0YygXkoknR");
+	 $("#bg-mp3 li ._2fu3EvuSxkRWBPBgPUk19_").removeClass("_2qFpLQL4m3cyei3AiQBFsn");//移除其他li的颜色
+	 $("#bg-mp3 li ._2fu3EvuSxkRWBPBgPUk19_ div").remove("._2PNRJNNjA4_U0YygXkoknR");
 
     $(this).find("._2fu3EvuSxkRWBPBgPUk19_").addClass("_2qFpLQL4m3cyei3AiQBFsn").append(str_html); //字体颜色
+
+    //查询markdown信息
+    var mdPath =$("#bg-mp3 li ._2qFpLQL4m3cyei3AiQBFsn").attr("data-path");
+    getMdInfo(mdPath)
   });
 });
+
+function newMdFile(){
+    //文件名称
+    layer.prompt({title: '新建文件',value:"", formType: 0,maxlength: 140}, function(fileName, index){
+         var tempObj={};
+         tempObj["fileName"]=fileName
+          $.ajax({
+                  type: "POST",
+                      url: "/make/file",
+                      data:tempObj,
+                      dataType: "json",
+                      success: function(data){
+                      if(data.error==0){
+                          layer.msg("创建成功");
+                          layer.close(index);
+                      }else{
+                        layer.msg(data.error_description);
+                        //alert(data.error_description);
+                      }
+          
+                //setTimeout("window.location.reload()",1000);
+                }
+          })	
+    });
+}
+
+
+
+function getMdInfo(filePath){
+        var tempObj={};
+        tempObj["fileName"]=filePath
+        editor.setValue('');
+        $.ajax({
+          type: "POST",
+              url: "/markdown/info",
+              data:tempObj,
+              dataType: "json",
+              success: function(res){
+              if(res.error==0){
+                editor.setValue(res.result.info);
+              }else{
+                layer.msg(res.error_description);
+              }
+        }
+      })	
+}
 
