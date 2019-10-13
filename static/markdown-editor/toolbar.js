@@ -283,6 +283,17 @@ document.getElementById('newFile').addEventListener('click', function() {
 	newMdFile();
 });
 
+//删除文件
+document.getElementById('deleteFile').addEventListener('click', function() {	
+	deleteMdFile();
+});
+
+//重命名文件
+document.getElementById('renameFile').addEventListener('click', function() {	
+	renameMdFile();
+});
+
+
 
 
 
@@ -524,7 +535,76 @@ function newMdFile(){
     });
 }
 
+//删除文件
+function deleteMdFile(){
+  //选择的当前文件
+  var fileName =$("#bg-mp3 li ._2qFpLQL4m3cyei3AiQBFsn").attr("data-path");
+  if(!fileName){
+    layer.msg("请选择文件");
+    return false;
+  }
 
+  //文件名称
+  layer.confirm(fileName, {
+    title: '确认删除文件?',
+    btn: ['删除','取消'] //按钮
+  }, function(index){//确认
+         var tempObj={};
+         tempObj["fileName"]=fileName
+          $.ajax({
+                  type: "POST",
+                      url: "/markdown/delete",
+                      data:tempObj,
+                      dataType: "json",
+                      success: function(data){
+                      if(data.error==0){
+                          layer.msg("删除成功");
+                          layer.close(index);
+                      }else{
+                        layer.msg(data.error_description);
+                        //alert(data.error_description);
+                      }
+                }
+          })	
+  }, function(){//取消
+   
+  });
+}
+
+function renameMdFile(){
+  //选择的当前文件
+  var fileName =$("#bg-mp3 li ._2qFpLQL4m3cyei3AiQBFsn").attr("data-path");
+  if(!fileName){
+    layer.msg("请选择文件");
+    return false;
+  }
+
+  var oldName =$("#bg-mp3 li ._2qFpLQL4m3cyei3AiQBFsn").attr("data-name");
+
+  //文件名称
+  layer.prompt({title: '重命名文件',value:oldName, formType: 0,maxlength: 140}, function(newName, index){
+    var tempObj={};
+    tempObj["fileName"]=fileName
+    tempObj["newName"]=newName
+     $.ajax({
+             type: "POST",
+                 url: "/markdown/rename",
+                 data:tempObj,
+                 dataType: "json",
+                 success: function(data){
+                 if(data.error==0){
+                     layer.msg("重命名成功");
+                     layer.close(index);
+                 }else{
+                   layer.msg(data.error_description);
+                   //alert(data.error_description);
+                 }
+     
+           //setTimeout("window.location.reload()",1000);
+           }
+     })	
+});
+}
 
 function getMdInfo(filePath){
         var tempObj={};

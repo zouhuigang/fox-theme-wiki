@@ -21,19 +21,46 @@
                         </div>
                     </li>
 
-                    <li class="_15gkkHL4bQv9sweLi1HhLx">
+
+                    <li class="_15gkkHL4bQv9sweLi1HhLx"   id="deleteFile">
+                            <div class="_3FxKOsew291f4_tZ67BSSA _18IkeGhOznzNjFa-Zr14Zm">
+                                <div class="_2PNRJNNjA4_U0YygXkoknR fa fa-trash-o _38v59lIlD-e0HH3on74oi6">
+                                </div>
+                                <div class="S8Y5s96GBvntJa9aGS70F">
+                                    删除文件
+                                </div>
+                                <div class="_28Jw2eppfH5brEFWIsmzrU">
+                                </div>
+                            </div>
+                    </li>
+
+
+                    <li class="_15gkkHL4bQv9sweLi1HhLx"  id="newFile">
                             <div class="_3FxKOsew291f4_tZ67BSSA _18IkeGhOznzNjFa-Zr14Zm">
                                 <div class="_2PNRJNNjA4_U0YygXkoknR _3UMi6giRuBI4hVmtmIBKcZ _38v59lIlD-e0HH3on74oi6">
                                 </div>
-                                <div class="S8Y5s96GBvntJa9aGS70F"  id="newFile">
+                                <div class="S8Y5s96GBvntJa9aGS70F">
                                     新建文件
                                 </div>
                                 <div class="_28Jw2eppfH5brEFWIsmzrU">
                                 </div>
                             </div>
                     </li>
-                    
 
+
+                    <li class="_15gkkHL4bQv9sweLi1HhLx"  id="renameFile">
+                        <div class="_3FxKOsew291f4_tZ67BSSA _18IkeGhOznzNjFa-Zr14Zm">
+                            <div class="_2PNRJNNjA4_U0YygXkoknR fa fa-repeat _38v59lIlD-e0HH3on74oi6">
+                            </div>
+                            <div class="S8Y5s96GBvntJa9aGS70F">
+                                重命名
+                            </div>
+                            <div class="_28Jw2eppfH5brEFWIsmzrU">
+                            </div>
+                        </div>
+                </li>
+                    
+<!-- 
                     <li class="_15gkkHL4bQv9sweLi1HhLx">
                             <div class="_3FxKOsew291f4_tZ67BSSA _18IkeGhOznzNjFa-Zr14Zm">
                                 <div class="_2PNRJNNjA4_U0YygXkoknR _3UMi6giRuBI4hVmtmIBKcZ _38v59lIlD-e0HH3on74oi6">
@@ -44,7 +71,7 @@
                                     </div>
                                 </div>  
                             </div>
-                    </li>
+                    </li> -->
 
                 </ul>
             </div>
@@ -61,8 +88,8 @@
                         <div class="_3FxKOsew291f4_tZ67BSSA _18IkeGhOznzNjFa-Zr14Zm">
                             <div class="_2PNRJNNjA4_U0YygXkoknR fa fa-file-o _38v59lIlD-e0HH3on74oi6">
                             </div>
-                            <div class="_2fu3EvuSxkRWBPBgPUk19_" data-path={{.Path}}>
-                                {{.Name}}
+                            <div class="_2fu3EvuSxkRWBPBgPUk19_" data-path={{.Path}} data-name={{.Name}}>
+                                {{.Name}}{{.Ext}}
                             </div>
                         </div>
                     </li>
