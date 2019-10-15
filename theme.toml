@@ -1,0 +1,2 @@
+[template]
+pages = ["markdown/editor.html", "common/template.html", "compoents/header.html", "compoents/leftNav.html", "compoents/body.html","compoents/left2.html","compoents/preview.html","compoents/save.html"]
